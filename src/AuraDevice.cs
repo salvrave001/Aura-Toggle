@@ -32,7 +32,7 @@ internal sealed class AuraNotFoundException : Exception
 /// onboard zone and 1..n for the RGB and ARGB headers. Naming is left to the caller, so a
 /// language change relabels the selector without having to talk to the hardware again.
 /// </summary>
-internal sealed record AuraChannel(int Index, bool Onboard, int Header);
+internal sealed record AuraChannel(int Index, bool Onboard, int Header, string? Label = null);
 
 /// <summary>One controller for the selector: a stable key, a display name and its channels.</summary>
 internal sealed record AuraDeviceSummary(string Key, string Name, List<AuraChannel> Channels);
@@ -60,7 +60,7 @@ internal static class ChannelLabels
     {
         string? own = AuraChannelNames.Get(chosen, device.Key, channel.Index);
 
-        string name = own ?? (channel.Onboard
+        string name = own ?? channel.Label ?? (channel.Onboard
             ? Strings.ChannelOnboard
             : string.Format(CultureInfo.CurrentCulture, Strings.ChannelHeader, channel.Header));
 
@@ -75,7 +75,7 @@ internal static class ChannelLabels
 /// 65 byte reports, report id 0xEC, command in the first payload byte.
 /// Only volatile commands are used - the controller flash is never written.
 /// </summary>
-internal sealed class AuraDevice : IDisposable
+internal sealed class AuraDevice : ILightingDevice
 {
     private const byte ReportId = 0xEC;
     private const byte CmdReadFirmware = 0x82;
@@ -195,6 +195,11 @@ internal sealed class AuraDevice : IDisposable
         // which is the slow part of discovery, and the known and unknown ids were each doing a
         // full pass of their own.
         List<HidInfo> present = Hid.Enumerate((vid, _) => vid == VendorId, "vid_0b05");
+
+        // The Ryuo IV screen is an Android board that also uses this vendor id on some firmware.
+        // A lighting handshake written to it is not a lighting command: a frame it cannot parse
+        // takes its USB link down. It is never a candidate, whatever usage page it reports.
+        present.RemoveAll(info => info.Pid == RyuoFrame.ProductId);
 
         var candidates = new List<HidInfo>();
         candidates.AddRange(present.Where(info => KnownProductIds.Contains(info.Pid)));

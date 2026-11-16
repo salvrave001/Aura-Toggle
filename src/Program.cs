@@ -74,6 +74,12 @@ internal static partial class Program
         }
 #endif
 
+        // The elevated half of the one-time SMBus driver install. It must not open the window.
+        if (args.Length == 1 && args[0] == PortIo.InstallArgument)
+        {
+            return PortIo.InstallElevated();
+        }
+
         // The language choice also governs usage and error output on the command line.
         AuraSettings launchSettings = AuraSettings.Load();
         Strings.Override = launchSettings.Language;
@@ -125,6 +131,10 @@ internal static partial class Program
             PostMessage(Broadcast, ShowWindowMessage, IntPtr.Zero, IntPtr.Zero);
             return 0;
         }
+
+        // RAM lighting needs a port driver the first time. Asked here, not from a scheduled
+        // command, so a lights-out task never pops a consent dialog.
+        PortIo.PromptAllowed = true;
 
         ApplicationConfiguration.Initialize();
 #pragma warning disable WFO5001 // colour mode support is still marked experimental
@@ -457,7 +467,7 @@ internal static partial class Program
         // One discovery serves both the lookup of the named target and the action, under one
         // hardware lock, so the controllers are not handshaken again for every step.
         using IDisposable guard = AuraFiles.HardwareLock();
-        if (!AuraDevice.TryDiscoverAll(out List<AuraDevice> devices, out int discoverError))
+        if (!LightingDevices.TryDiscoverAll(out List<ILightingDevice> devices, out int discoverError))
         {
             WriteError(ListErrorText(discoverError));
             return discoverError;
@@ -465,7 +475,7 @@ internal static partial class Program
 
         try
         {
-            List<AuraDeviceSummary> summaries = AuraDevice.Summarize(devices);
+            List<AuraDeviceSummary> summaries = LightingDevices.Summarize(devices);
             if (!TryResolveTarget(deviceArg, channelArg, summaries, out string? targetDevice,
                     out int targetChannel, out int targetingError))
             {
@@ -485,7 +495,7 @@ internal static partial class Program
     /// <c>devices</c> are the controllers a targeted call already opened (null for the whole
     /// board); the caller disposes them.
     /// </summary>
-    internal delegate int ApplyAction(string? targetDevice, int targetChannel, List<AuraDevice>? devices,
+    internal delegate int ApplyAction(string? targetDevice, int targetChannel, IReadOnlyList<ILightingDevice>? devices,
         List<AuraDeviceSummary>? summaries);
 
     /// <summary>
@@ -739,9 +749,10 @@ internal static partial class Program
             AuraPresets.Normalise(DefaultChannelName(entry.Channel, language)) == wanted);
     }
 
-    internal static string DefaultChannelName(AuraChannel channel, string language) => channel.Onboard
-        ? Strings.InLanguage("ChannelOnboard", language)
-        : string.Format(CultureInfo.InvariantCulture, Strings.InLanguage("ChannelHeader", language), channel.Header);
+    internal static string DefaultChannelName(AuraChannel channel, string language) => channel.Label
+        ?? (channel.Onboard
+            ? Strings.InLanguage("ChannelOnboard", language)
+            : string.Format(CultureInfo.InvariantCulture, Strings.InLanguage("ChannelHeader", language), channel.Header));
 
     /// <summary>"&lt;flat&gt;\t&lt;device&gt;.&lt;channel&gt;\t&lt;name&gt;" - the identifiers
     /// <c>-channel</c> accepts, always in English regardless of the display language so a script
@@ -817,7 +828,7 @@ internal static partial class Program
 
     internal static int PrintList()
     {
-        List<AuraDeviceSummary> devices = AuraDevice.ListDevices(out int errorExitCode);
+        List<AuraDeviceSummary> devices = LightingDevices.ListDevices(out int errorExitCode);
         if (devices.Count == 0)
         {
             WriteError(ListErrorText(errorExitCode));
@@ -853,7 +864,7 @@ internal static partial class Program
 
     internal static int PrintStatus(bool json)
     {
-        List<AuraDeviceSummary> devices = AuraDevice.ListDevices(out int errorExitCode);
+        List<AuraDeviceSummary> devices = LightingDevices.ListDevices(out int errorExitCode);
         if (devices.Count == 0)
         {
             WriteError(ListErrorText(errorExitCode));
@@ -982,7 +993,7 @@ internal static partial class Program
         Switch(on, deviceKey, channel, null);
 
     /// <param name="open">Controllers the caller already discovered and disposes itself; null discovers here.</param>
-    internal static AuraState Switch(bool on, string? deviceKey, int channel, List<AuraDevice>? open)
+    internal static AuraState Switch(bool on, string? deviceKey, int channel, IReadOnlyList<ILightingDevice>? open)
     {
         // Locked around the whole read-modify-write: a command-line switch and one from the
         // window running at the same time would otherwise each save their own copy of
@@ -1039,9 +1050,9 @@ internal static partial class Program
     /// rather than writing it, so switching off and on again cannot flatten it.
     /// </summary>
     /// <returns>Whether any channel on the machine is on afterwards.</returns>
-    internal static bool Restore(AuraState state, string? deviceKey, int channel, List<AuraDevice>? open)
+    internal static bool Restore(AuraState state, string? deviceKey, int channel, IReadOnlyList<ILightingDevice>? open)
     {
-        List<AuraDevice> devices = open ?? AuraDevice.DiscoverAll();
+        IReadOnlyList<ILightingDevice> devices = open ?? LightingDevices.DiscoverAll();
 
         try
         {
@@ -1226,14 +1237,23 @@ internal static partial class Program
     /// Only the brightness path sets it: a dimmer must never light a header the user switched off.
     /// </param>
     /// <returns>The channels that were named, for the caller to record.</returns>
-    internal static List<(string DeviceKey, int Channel)> ApplyMix(List<AuraDevice> devices, string? deviceKey,
+    internal static List<(string DeviceKey, int Channel)> ApplyMix(IReadOnlyList<ILightingDevice> devices, string? deviceKey,
         int channel, AuraState state, ChannelLighting? look, byte? brightness = null, bool keepPower = false,
-        Func<AuraDevice, bool>? only = null)
+        Func<ILightingDevice, bool>? only = null)
     {
-        List<AuraDevice> targets = ResolveDevices(devices, deviceKey);
+        IReadOnlyList<ILightingDevice> targets = ResolveDevices(devices, deviceKey);
         if (only != null)
         {
-            targets = targets.FindAll(device => only(device));
+            var filtered = new List<ILightingDevice>();
+            foreach (ILightingDevice device in targets)
+            {
+                if (only(device))
+                {
+                    filtered.Add(device);
+                }
+            }
+
+            targets = filtered;
         }
 
         // Read once, then indexed per channel, rather than re-parsing the whole file for every
@@ -1243,7 +1263,7 @@ internal static partial class Program
         IOException? failure = null;
         bool delivered = false;
 
-        foreach (AuraDevice device in targets)
+        foreach (ILightingDevice device in targets)
         {
             DeviceMix mix = MixDevice(device.Channels.Select(c => c.Index).ToList(),
                 index => AuraChannelStates.Get(remembered, device.Key, index), channel, state, look, brightness,
@@ -1322,11 +1342,26 @@ internal static partial class Program
 
     /// <summary>One controller by key, or every controller when none is named. Shared by every
     /// caller that resolves "-device" against an already-open device list.</summary>
-    internal static List<AuraDevice> ResolveDevices(List<AuraDevice> devices, string? deviceKey)
+    internal static IReadOnlyList<ILightingDevice> ResolveDevices(IReadOnlyList<ILightingDevice> devices, string? deviceKey)
     {
-        List<AuraDevice> targets = string.IsNullOrEmpty(deviceKey)
-            ? devices
-            : devices.FindAll(device => device.Key == deviceKey);
+        if (string.IsNullOrEmpty(deviceKey))
+        {
+            if (devices.Count == 0)
+            {
+                throw new AuraNotFoundException(Strings.ErrorControllerNotFound, 3);
+            }
+
+            return devices;
+        }
+
+        var targets = new List<ILightingDevice>();
+        foreach (ILightingDevice device in devices)
+        {
+            if (device.Key == deviceKey)
+            {
+                targets.Add(device);
+            }
+        }
 
         if (targets.Count == 0)
         {
@@ -1341,11 +1376,11 @@ internal static partial class Program
     /// The keys of the controllers found this run, handed to the channel records so an attached
     /// controller's look is never aged out.
     /// </summary>
-    internal static string[] Attached(List<AuraDevice> devices) => devices.Select(d => d.Key).ToArray();
+    internal static string[] Attached(IEnumerable<ILightingDevice> devices) => devices.Select(d => d.Key).ToArray();
 
-    private static void Close(List<AuraDevice> devices)
+    private static void Close(IEnumerable<ILightingDevice> devices)
     {
-        foreach (AuraDevice device in devices)
+        foreach (ILightingDevice device in devices)
         {
             device.Dispose();
         }
@@ -1355,11 +1390,11 @@ internal static partial class Program
     /// Whether at least one channel of the controllers already open is on. A channel with no
     /// record has never been switched on its own, which means it is following the board.
     /// </summary>
-    internal static bool AnyChannelOn(List<AuraDevice> devices)
+    internal static bool AnyChannelOn(IEnumerable<ILightingDevice> devices)
     {
         Dictionary<string, ChannelLighting> remembered = AuraChannelStates.All();
 
-        foreach (AuraDevice device in devices)
+        foreach (ILightingDevice device in devices)
         {
             foreach (AuraChannel channel in device.Channels)
             {
@@ -1380,7 +1415,7 @@ internal static partial class Program
 
     /// <param name="open">Controllers the caller already discovered and disposes itself; null discovers here.</param>
     internal static AuraState ApplyPreset(AuraPreset preset, Color? colour, string? deviceKey, int channel,
-        List<AuraDevice>? open)
+        IReadOnlyList<ILightingDevice>? open)
     {
         using IDisposable guard = AuraFiles.HardwareLock();
 
@@ -1422,7 +1457,7 @@ internal static partial class Program
         SetBrightness(percent, deviceKey, channel, null);
 
     /// <param name="open">Controllers the caller already discovered and disposes itself; null discovers here.</param>
-    internal static AuraState SetBrightness(byte percent, string? deviceKey, int channel, List<AuraDevice>? open)
+    internal static AuraState SetBrightness(byte percent, string? deviceKey, int channel, IReadOnlyList<ILightingDevice>? open)
     {
         using IDisposable guard = AuraFiles.HardwareLock();
 
@@ -1451,7 +1486,7 @@ internal static partial class Program
             return ApplyCustomPreset(preset, brightnessOverride: percent);
         }
 
-        List<AuraDevice> devices = open ?? AuraDevice.DiscoverAll();
+        IReadOnlyList<ILightingDevice> devices = open ?? LightingDevices.DiscoverAll();
 
         try
         {
@@ -1481,13 +1516,13 @@ internal static partial class Program
     }
 
     /// <summary>Every channel the caller named, as the pairs the stored records are keyed by.</summary>
-    internal static List<(string DeviceKey, int Channel)> Channels(List<AuraDevice> devices, string? deviceKey,
+    internal static List<(string DeviceKey, int Channel)> Channels(IReadOnlyList<ILightingDevice> devices, string? deviceKey,
         int channel)
     {
-        List<AuraDevice> targets = ResolveDevices(devices, deviceKey);
+        IReadOnlyList<ILightingDevice> targets = ResolveDevices(devices, deviceKey);
         var named = new List<(string, int)>();
 
-        foreach (AuraDevice device in targets)
+        foreach (ILightingDevice device in targets)
         {
             foreach (AuraChannel affected in device.Channels)
             {
@@ -1558,7 +1593,7 @@ internal static partial class Program
         using IDisposable guard = AuraFiles.HardwareLock();
 
         AuraState state = AuraState.Load();
-        var devices = AuraDevice.DiscoverAll();
+        var devices = LightingDevices.DiscoverAll();
         var applied = new List<(string DeviceKey, int Channel, ChannelLighting Look)>();
         var named = new HashSet<(string DeviceKey, int Channel)>();
         IOException? failure = null;
@@ -1584,7 +1619,7 @@ internal static partial class Program
         {
             Dictionary<string, ChannelLighting> remembered = AuraChannelStates.All();
 
-            foreach (AuraDevice device in devices)
+            foreach (ILightingDevice device in devices)
             {
                 foreach (AuraChannel affected in device.Channels)
                 {
@@ -1634,7 +1669,7 @@ internal static partial class Program
                 ? devices
                 : devices.FindAll(d => named.Any(n => n.DeviceKey == d.Key));
 
-            foreach (AuraDevice device in gapFillDevices)
+            foreach (ILightingDevice device in gapFillDevices)
             {
                 foreach (AuraChannel channel in device.Channels)
                 {
@@ -1658,7 +1693,7 @@ internal static partial class Program
                 }
             }
 
-            foreach (AuraDevice device in devices)
+            foreach (ILightingDevice device in devices)
             {
                 if (!perDevice.TryGetValue(device.Key, out List<ChannelLook>? looks))
                 {
@@ -1783,9 +1818,9 @@ internal static partial class Program
 
     /// <returns>Whether any channel on the machine is on afterwards.</returns>
     internal static bool Send(byte mode, AuraState state, string? deviceKey, int channel,
-        List<AuraDevice>? open = null)
+        IReadOnlyList<ILightingDevice>? open = null)
     {
-        List<AuraDevice> devices = open ?? AuraDevice.DiscoverAll();
+        IReadOnlyList<ILightingDevice> devices = open ?? LightingDevices.DiscoverAll();
 
         try
         {
@@ -1846,10 +1881,10 @@ internal static partial class Program
         // The controller talks to one caller at a time: the discovery and the lighting burst
         // below each hold the hardware lock, the open-ended wait between them deliberately does not
         // - a rename popup can stay open for minutes, and nothing else may be shut out for that.
-        List<AuraDevice> devices;
+        List<ILightingDevice> devices;
         using (AuraFiles.HardwareLock())
         {
-            devices = AuraDevice.DiscoverAll();
+            devices = LightingDevices.DiscoverAll();
         }
 
         try
@@ -1863,13 +1898,13 @@ internal static partial class Program
 
             // Recorded before each controller is written, not after: a controller that throws
             // half way through its burst has still been changed and has to be put back.
-            var touched = new List<AuraDevice>();
+            var touched = new List<ILightingDevice>();
 
             try
             {
                 using (AuraFiles.HardwareLock())
                 {
-                    foreach (AuraDevice device in devices)
+                    foreach (ILightingDevice device in devices)
                     {
                         var looks = new List<ChannelLook>();
 
@@ -1899,7 +1934,7 @@ internal static partial class Program
                     AuraState state = AuraState.Load();
                     Dictionary<string, ChannelLighting> remembered = AuraChannelStates.All();
 
-                    foreach (AuraDevice device in touched)
+                    foreach (ILightingDevice device in touched)
                     {
                         Replay(device, state, remembered);
                     }
@@ -1922,13 +1957,13 @@ internal static partial class Program
     {
         using IDisposable guard = AuraFiles.HardwareLock();
 
-        var devices = AuraDevice.DiscoverAll();
+        var devices = LightingDevices.DiscoverAll();
 
         try
         {
             AuraState state = AuraState.Load();
 
-            foreach (AuraDevice device in devices)
+            foreach (ILightingDevice device in devices)
             {
                 var looks = new List<ChannelLook>();
 
@@ -1967,14 +2002,14 @@ internal static partial class Program
     {
         using IDisposable guard = AuraFiles.HardwareLock();
 
-        var devices = AuraDevice.DiscoverAll();
+        var devices = LightingDevices.DiscoverAll();
 
         try
         {
             AuraState state = AuraState.Load();
             Dictionary<string, ChannelLighting> remembered = AuraChannelStates.All();
 
-            foreach (AuraDevice device in devices)
+            foreach (ILightingDevice device in devices)
             {
                 Replay(device, state, remembered);
             }
@@ -1986,7 +2021,7 @@ internal static partial class Program
     }
 
     /// <summary>Re-sends every channel of one controller exactly as the records describe it.</summary>
-    private static void Replay(AuraDevice device, AuraState state,
+    private static void Replay(ILightingDevice device, AuraState state,
         Dictionary<string, ChannelLighting> remembered)
     {
         var looks = new List<ChannelLook>();

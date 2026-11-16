@@ -356,4 +356,28 @@
   <data name="HotkeyModifierWin" xml:space="preserve">
     <value>Win</value>
   </data>
+  <data name="RyuoButton" xml:space="preserve"><value>Scherm</value></data>
+  <data name="RyuoTitle" xml:space="preserve"><value>Ryuo IV-scherm</value></data>
+  <data name="RyuoAccessible" xml:space="preserve"><value>Scherm van de koeler</value></data>
+  <data name="RyuoDrive" xml:space="preserve"><value>Scherm bijwerken</value></data>
+  <data name="RyuoTitleColor" xml:space="preserve"><value>Kleur van het label</value></data>
+  <data name="RyuoValueColor" xml:space="preserve"><value>Kleur van de waarde</value></data>
+  <data name="RyuoMedia" xml:space="preserve"><value>Clip</value></data>
+  <data name="RyuoPlayMode" xml:space="preserve"><value>Afspelen</value></data>
+  <data name="RyuoSlot" xml:space="preserve"><value>Plaats {0}</value></data>
+  <data name="RyuoStatusMissing" xml:space="preserve"><value>Scherm van de koeler niet gevonden.</value></data>
+  <data name="RyuoStatusOn" xml:space="preserve"><value>Het scherm wordt bijgewerkt.</value></data>
+  <data name="RyuoStatusOff" xml:space="preserve"><value>Het scherm blijft zoals het is.</value></data>
+  <data name="RyuoNote" xml:space="preserve"><value>Het scherm houdt deze indeling alleen zolang het programma open is. Ongeveer tien seconden na het sluiten toont de koeler weer zijn eigen clip.</value></data>
+  <data name="RyuoPlaySingle" xml:space="preserve"><value>Eén clip</value></data>
+  <data name="RyuoPlayRandom" xml:space="preserve"><value>Willekeurig</value></data>
+  <data name="RyuoPlayCycle" xml:space="preserve"><value>Op volgorde</value></data>
+  <data name="RyuoItemOff" xml:space="preserve"><value>Uit</value></data>
+  <data name="RyuoItemCpuLoad" xml:space="preserve"><value>CPU-belasting</value></data>
+  <data name="RyuoItemCpuSpeed" xml:space="preserve"><value>CPU-snelheid</value></data>
+  <data name="RyuoItemMemory" xml:space="preserve"><value>Geheugen</value></data>
+  <data name="RyuoItemDate" xml:space="preserve"><value>Datum en tijd</value></data>
+  <data name="RyuoItemCpuTemp" xml:space="preserve"><value>CPU-temperatuur</value></data>
+  <data name="RyuoItemGpuTemp" xml:space="preserve"><value>GPU-temperatuur</value></data>
+  <data name="RyuoItemGpuLoad" xml:space="preserve"><value>GPU-belasting</value></data>
 </root>

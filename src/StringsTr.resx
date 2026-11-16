@@ -356,4 +356,28 @@
   <data name="HotkeyModifierWin" xml:space="preserve">
     <value>Win</value>
   </data>
+  <data name="RyuoButton" xml:space="preserve"><value>Ekran</value></data>
+  <data name="RyuoTitle" xml:space="preserve"><value>Ryuo IV ekranı</value></data>
+  <data name="RyuoAccessible" xml:space="preserve"><value>Soğutucu ekranı</value></data>
+  <data name="RyuoDrive" xml:space="preserve"><value>Ekranı güncelle</value></data>
+  <data name="RyuoTitleColor" xml:space="preserve"><value>Etiket rengi</value></data>
+  <data name="RyuoValueColor" xml:space="preserve"><value>Değer rengi</value></data>
+  <data name="RyuoMedia" xml:space="preserve"><value>Klip</value></data>
+  <data name="RyuoPlayMode" xml:space="preserve"><value>Oynatma</value></data>
+  <data name="RyuoSlot" xml:space="preserve"><value>Konum {0}</value></data>
+  <data name="RyuoStatusMissing" xml:space="preserve"><value>Soğutucu ekranı bulunamadı.</value></data>
+  <data name="RyuoStatusOn" xml:space="preserve"><value>Ekran güncelleniyor.</value></data>
+  <data name="RyuoStatusOff" xml:space="preserve"><value>Ekran olduğu gibi bırakıldı.</value></data>
+  <data name="RyuoNote" xml:space="preserve"><value>Ekran bu düzeni yalnızca program açıkken tutar. Kapandıktan yaklaşık on saniye sonra soğutucu kendi klibini yeniden gösterir.</value></data>
+  <data name="RyuoPlaySingle" xml:space="preserve"><value>Tek klip</value></data>
+  <data name="RyuoPlayRandom" xml:space="preserve"><value>Karışık</value></data>
+  <data name="RyuoPlayCycle" xml:space="preserve"><value>Sırayla</value></data>
+  <data name="RyuoItemOff" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="RyuoItemCpuLoad" xml:space="preserve"><value>CPU yükü</value></data>
+  <data name="RyuoItemCpuSpeed" xml:space="preserve"><value>CPU hızı</value></data>
+  <data name="RyuoItemMemory" xml:space="preserve"><value>Bellek</value></data>
+  <data name="RyuoItemDate" xml:space="preserve"><value>Tarih ve saat</value></data>
+  <data name="RyuoItemCpuTemp" xml:space="preserve"><value>CPU sıcaklığı</value></data>
+  <data name="RyuoItemGpuTemp" xml:space="preserve"><value>GPU sıcaklığı</value></data>
+  <data name="RyuoItemGpuLoad" xml:space="preserve"><value>GPU yükü</value></data>
 </root>

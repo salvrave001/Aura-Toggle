@@ -8,4 +8,4 @@
 
 - [ ] `dotnet build AuraToggle.csproj -c Release` without warnings
 - [ ] `tests\static-checks.ps1` passes
-- [ ] New interface text is in all ten languages
+- [ ] New interface text is in all eleven languages

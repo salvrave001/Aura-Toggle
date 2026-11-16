@@ -30,7 +30,7 @@ The same run on every pull request. A change to logic comes with unit tests in
 
 - One change per pull request, with a short description of what it fixes or adds and how you
   tested it.
-- New interface text goes into all ten `src\Strings*.resx` files and `src\Strings.cs`. If you
+- New interface text goes into all eleven `src\Strings*.resx` files and `src\Strings.cs`. If you
   cannot translate a language, put the English text there and say so in the pull request.
 - Fixed pixel distances go through `Scaled()`, so the window looks right at every display scale.
 - Never add code that writes to the controller's flash memory or that opens a network connection.

@@ -124,6 +124,9 @@ internal sealed partial class ToggleForm : Form
     private readonly Layout _topRow;
     private RowStyle _topRowHeight = null!;
     private readonly GlyphButton _gear = new();
+    private readonly PillButton _screen = new();
+    private RyuoPopup? _ryuoPopup;
+    private long _ryuoClosedAt;
     private readonly Layout _layout = new();
     private readonly NotifyIcon _tray = new();
     private OcclusionWatch? _occlusion;
@@ -269,6 +272,12 @@ internal sealed partial class ToggleForm : Form
         _gear.AccessibleName = Strings.SettingsAccessibleName;
         _gear.Click += OnSettingsClick;
 
+        _screen.Text = Strings.RyuoButton;
+        _screen.AccessibleName = Strings.RyuoAccessible;
+        _screen.DesignHeight = 34;
+        _screen.FitToText();
+        _screen.Click += OnScreenClick;
+
         // A display-scale change reaches these two in their own time: WinForms updates a child's
         // own dpi and replaces its font after this window has already been told, so the widths
         // measured in between are still the old display's - and consistently so, which is why no
@@ -367,11 +376,12 @@ internal sealed partial class ToggleForm : Form
             // Only Height is ever read from this row (ResizeToContent), and GetPreferredSize()
             // answers that without opting the row's own width into the same floor.
             Dock = DockStyle.Fill,
-            ColumnCount = 3,
+            ColumnCount = 4,
             RowCount = 1,
             Margin = new Padding(0),
         };
         _topRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        _topRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         _topRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         _topRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         // An explicit row style, not left to default: without AutoSize on the panel itself (see
@@ -381,7 +391,8 @@ internal sealed partial class ToggleForm : Form
         _topRow.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         _topRow.Controls.Add(_effects, 0, 0);
         _topRow.Controls.Add(_channel, 1, 0);
-        _topRow.Controls.Add(_gear, 2, 0);
+        _topRow.Controls.Add(_screen, 2, 0);
+        _topRow.Controls.Add(_gear, 3, 0);
 
         _layout.Dock = DockStyle.Fill;
         _layout.ColumnCount = 1;
@@ -396,7 +407,7 @@ internal sealed partial class ToggleForm : Form
         // engine guess rather than measure - the row reports 34 px and is handed 100, starving the
         // toggle row below it. Told the true number instead, kept current by ResizeToContent.
         _topRowHeight = new RowStyle(SizeType.Absolute, _topRow.PreferredSize.Height);
-        _layout.RowStyles.Add(_topRowHeight);                        // effect list, channel, gear
+        _layout.RowStyles.Add(_topRowHeight);                        // effect list, channel, screen, gear
         _layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // toggle
         _layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));      // colours
         _layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));      // brightness
@@ -831,6 +842,7 @@ internal sealed partial class ToggleForm : Form
         }
 
         ApplyHotkeySetting(popup: null);
+        RyuoHost.StartIfWanted();
 
         await DiscoverDevices();
 
@@ -963,7 +975,7 @@ internal sealed partial class ToggleForm : Form
             {
                 (_devices, _noControllerCode) = await Task.Run(() =>
                 {
-                    List<AuraDeviceSummary> listed = AuraDevice.ListDevices(out int code);
+                    List<AuraDeviceSummary> listed = LightingDevices.ListDevices(out int code);
                     return (listed, code);
                 });
             }
@@ -1654,6 +1666,34 @@ internal sealed partial class ToggleForm : Form
         popup.Open(anchor, this);
     }
 
+    private void OnScreenClick(object? sender, EventArgs e)
+    {
+        if (_ryuoPopup != null)
+        {
+            _ryuoPopup.Close();
+            return;
+        }
+
+        // Same gesture as the gear: the click that closes the panel arrives after it has already
+        // gone, and must not open a second one.
+        if (Environment.TickCount64 - _ryuoClosedAt < 250)
+        {
+            return;
+        }
+
+        var popup = new RyuoPopup();
+        _ryuoPopup = popup;
+        popup.FormClosed += (_, _) =>
+        {
+            _ryuoPopup = null;
+            _ryuoClosedAt = Environment.TickCount64;
+            popup.Dispose();
+        };
+
+        Rectangle button = _screen.RectangleToScreen(_screen.ClientRectangle);
+        popup.Open(new Point(button.Right, button.Bottom + this.Scaled(6)), this);
+    }
+
 #if REVIEW
     /// <summary>
     /// Review mode only: opens the settings panel the same way a real gear click does, then keeps
@@ -1954,6 +1994,7 @@ internal sealed partial class ToggleForm : Form
         }
 
         SaveWindowPosition();
+        RyuoHost.Shutdown();
 
         if (_identifyCts != null)
         {
@@ -2500,6 +2541,10 @@ internal sealed partial class ToggleForm : Form
         _effects.AccessibleName = Strings.PresetAccessibleName;
         _channel.AccessibleName = Strings.ChannelAccessibleName;
         _gear.AccessibleName = Strings.SettingsAccessibleName;
+        _screen.Text = Strings.RyuoButton;
+        _screen.AccessibleName = Strings.RyuoAccessible;
+        _screen.FitToText();
+        QueueSettle();
         _toggle.AccessibleName = Strings.ButtonAccessibleName;
         _colours.AccessibleName = Strings.ColourAccessibleName;
         _brightnessLabel.Text = Strings.SettingBrightness;
@@ -2846,6 +2891,7 @@ internal sealed partial class ToggleForm : Form
         int gap = this.Scaled(RowGap);
         _effects.Margin = new Padding(0, 0, gap, 0);
         _channel.Margin = new Padding(0, 0, gap, 0);
+        _screen.Margin = new Padding(0, 0, gap, 0);
 
         _gear.Size = new Size(this.Scaled(GearSize), this.Scaled(GearSize));
         _gear.Margin = new Padding(0, this.Scaled(GearDrop), 0, 0);
@@ -2874,6 +2920,7 @@ internal sealed partial class ToggleForm : Form
             // A hint row is never shown closed - it cannot be picked - so it must not drive how
             // wide the window becomes; the popup that opens still measures it via FitEffectList.
             int row = _effects.PreferredWidthForItems(includeHints: false) + _effects.Margin.Horizontal
+                + _screen.Width + _screen.Margin.Horizontal
                 + _gear.Width + _gear.Margin.Horizontal;
 
             if (_channelShown)

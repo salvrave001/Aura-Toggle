@@ -6,7 +6,7 @@ using System.Resources;
 namespace AuraToggle;
 
 /// <summary>
-/// User facing text in the ten interface languages. The language follows the Windows display
+/// User facing text in the eleven interface languages. The language follows the Windows display
 /// language, English is the fallback for everything else.
 /// </summary>
 internal static class Strings
@@ -14,7 +14,7 @@ internal static class Strings
     /// <summary>
     /// Every language the interface exists in, keyed by the two-letter code Windows reports for
     /// the display language - which is also what <c>settings.json</c> stores, so one lookup serves
-    /// both. Two of the ten are regional variants of a wider language: Brazilian Portuguese answers
+    /// both. Two of them are regional variants of a wider language: Brazilian Portuguese answers
     /// for "pt" and Simplified Chinese for "zh", the two by far the most Windows installations are
     /// set to. The order here is the order the settings list shows.
     /// </summary>
@@ -27,6 +27,7 @@ internal static class Strings
         ("it", "StringsIt"),
         ("nl", "StringsNl"),
         ("pl", "StringsPl"),
+        ("ru", "StringsRu"),
         ("tr", "StringsTr"),
         ("ja", "StringsJa"),
         ("zh", "StringsZh"),
@@ -55,7 +56,7 @@ internal static class Strings
 
     /// <summary>
     /// One specific language regardless of <see cref="Override"/> - the CLI's forgiving
-    /// <c>-preset</c> and <c>-channel</c> matching accepts a name in any of the ten languages, not
+    /// <c>-preset</c> and <c>-channel</c> matching accepts a name in any of the eleven languages, not
     /// just whichever one is currently active.
     /// </summary>
     internal static string InLanguage(string key, string language) =>
@@ -236,6 +237,54 @@ internal static class Strings
     public static string HotkeyModifierShift => Get("HotkeyModifierShift");
 
     public static string HotkeyModifierWin => Get("HotkeyModifierWin");
+
+    public static string RyuoButton => Get("RyuoButton");
+
+    public static string RyuoTitle => Get("RyuoTitle");
+
+    public static string RyuoAccessible => Get("RyuoAccessible");
+
+    public static string RyuoDrive => Get("RyuoDrive");
+
+    public static string RyuoTitleColor => Get("RyuoTitleColor");
+
+    public static string RyuoValueColor => Get("RyuoValueColor");
+
+    public static string RyuoMedia => Get("RyuoMedia");
+
+    public static string RyuoPlayMode => Get("RyuoPlayMode");
+
+    public static string RyuoSlot => Get("RyuoSlot");
+
+    public static string RyuoStatusMissing => Get("RyuoStatusMissing");
+
+    public static string RyuoStatusOn => Get("RyuoStatusOn");
+
+    public static string RyuoStatusOff => Get("RyuoStatusOff");
+
+    public static string RyuoNote => Get("RyuoNote");
+
+    public static string RyuoPlaySingle => Get("RyuoPlaySingle");
+
+    public static string RyuoPlayRandom => Get("RyuoPlayRandom");
+
+    public static string RyuoPlayCycle => Get("RyuoPlayCycle");
+
+    public static string RyuoItemOff => Get("RyuoItemOff");
+
+    public static string RyuoItemCpuLoad => Get("RyuoItemCpuLoad");
+
+    public static string RyuoItemCpuSpeed => Get("RyuoItemCpuSpeed");
+
+    public static string RyuoItemMemory => Get("RyuoItemMemory");
+
+    public static string RyuoItemDate => Get("RyuoItemDate");
+
+    public static string RyuoItemCpuTemp => Get("RyuoItemCpuTemp");
+
+    public static string RyuoItemGpuTemp => Get("RyuoItemGpuTemp");
+
+    public static string RyuoItemGpuLoad => Get("RyuoItemGpuLoad");
 
     private static string Get(string key) =>
         Current.GetString(key) ?? English.GetString(key) ?? key;

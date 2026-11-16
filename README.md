@@ -4,7 +4,19 @@
 
 **Turn off ASUS RGB without Armoury Crate.**
 
-[![Latest release](https://img.shields.io/github/v/release/wbgcoding/Aura-Toggle)](https://github.com/wbgcoding/Aura-Toggle/releases/latest)
+**This is a modification of Aura Toggle, not a new program.** The author of Aura Toggle is [BGCoding](https://github.com/wbgcoding/Aura-Toggle). The changes here only add the specific parts listed below. They were checked on that hardware and are not a general driver for other memory, coolers or boards.
+
+**Это доработка Aura Toggle, а не новая программа.** Автор Aura Toggle: [BGCoding](https://github.com/wbgcoding/Aura-Toggle). Здесь добавлена поддержка только перечисленных ниже комплектующих. На другом железе она не проверялась.
+
+Checked, and only claimed, on this PC:
+
+- Mainboard lighting: ASUS ROG CROSSHAIR X870E EXTREME (Aura USB, product id 0x1AA6)
+- Memory: two G.Skill Trident Z5 Neo RGB DDR5, F5-6000J3636F16G, firmware AUDA0-E6K5-0101, 8 LEDs
+- Cooler screen: ASUS ROG RYUO IV SLC 360 ARGB pump screen, USB product id 0x1C76, firmware V1.0.10
+
+The processor in that PC is an AMD Ryzen 9 9950X3D. The 5 inch panel on the Crosshair is not controlled, and no video is uploaded to the Ryuo.
+
+[![Latest release](https://img.shields.io/github/v/release/salvrave001/Aura-Toggle)](https://github.com/salvrave001/Aura-Toggle/releases/latest)
 [![License](https://img.shields.io/github/license/wbgcoding/Aura-Toggle)](LICENSE)
 
 [Download](#download) · [Command line](#command-line) · [Effects](#effects) ·
@@ -20,7 +32,7 @@
 |---|---|---|---|
 | Size | ~700 KB | Hundreds of MB | Tens of MB and up |
 | Background service | None | Always running | Usually running |
-| Device range | ASUS Aura mainboard lighting only | ASUS ecosystem | Many vendors, many device types |
+| Device range | ASUS Aura mainboard lighting, plus only the memory and cooler screen named below | ASUS ecosystem | Many vendors, many device types |
 | Effects | 9 built-in, plus your own presets | ASUS's own effect set | Large effect libraries, often per-LED |
 
 OpenRGB and SignalRGB genuinely do more: more devices, more effects, per-LED control on
@@ -29,7 +41,7 @@ job and gets out of the way.
 
 **Quickstart:**
 
-1. Download `AuraToggle.exe` or the installer from the [latest release](https://github.com/wbgcoding/Aura-Toggle/releases/latest)
+1. Download `AuraToggle.exe` and `inpoutx64.dll` from the [latest release of this modification](https://github.com/salvrave001/Aura-Toggle/releases/latest). The original program, without these parts, remains [BGCoding's Aura Toggle](https://github.com/wbgcoding/Aura-Toggle/releases/latest)
 2. Run it. The portable exe needs no admin rights, and neither does the setup's "just for me"
    install (only installing a missing .NET runtime asks for it); installing for everyone asks once. The portable exe needs the
    [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0); the installer
@@ -66,8 +78,8 @@ Aura Toggle exists for the case where none of that is worth it for flipping one 
 - A global hotkey (Ctrl+Alt+L by default, configurable) switches the whole board from anywhere
 - **Name your channels**: "Desk strip" rather than "ARGB 1". While you pick a name, that one
   header lights up white and the rest of the board goes dark, so there is nothing to guess
-- **Ten languages** in the window *and* in the setup: English, German, Spanish, Portuguese,
-  Italian, Dutch, Polish, Turkish, Japanese and Chinese
+- **Eleven languages** in the window *and* in the setup: English, German, Spanish, Portuguese,
+  Italian, Dutch, Polish, Russian, Turkish, Japanese and Chinese
 - No driver, no telemetry, and no admin rights for the portable exe. The program itself makes no network connections at
   all; only the setup fetches the .NET runtime from Microsoft if your PC has none
 
@@ -80,7 +92,7 @@ Aura Toggle exists for the case where none of that is worth it for flipping one 
   app switch every channel of that controller to it as well, and the window shows it that way.
   The colour effects (static, breathing, flashing, chase fade, chase) stay per channel: set one
   channel back to one of those and only that channel changes, the others keep the dynamic effect
-- Only mainboard lighting: no GPU, RAM, fans or other Aura Sync devices
+- No GPU, fans or other Aura Sync devices. Memory and a cooler screen are covered only for the parts named below, not for RAM or coolers in general
 - No channel of its own for a plain (non-addressable) 12 V RGB header: only what the board
   reports as its onboard zone is switched
 - Can't read the current effect back from the controller, it remembers what it last set instead
@@ -136,9 +148,9 @@ unins000.exe /VERYSILENT                                     :: silent uninstall
 `/SUPPRESSMSGBOXES` answers the setup's questions without stopping: a copy installed in another
 folder is kept, and a missing .NET runtime is downloaded.
 
-The setup speaks the same ten languages as the program and picks the one Windows is set to, so it
+The setup speaks the same eleven languages as the program and picks the one Windows is set to, so it
 never opens with a language question in front of the wizard. `/LANG=` overrides that with any of
-`en de es pt it nl pl tr ja zh`.
+`en de es pt it nl pl ru tr ja zh`.
 
 ## Using it
 
@@ -232,7 +244,7 @@ AuraToggle.exe -toggle -channel 2                  :: only that channel's own on
 ```
 
 `-channel` accepts a flat number from `-list`, the `<controller>.<channel>` form, the default
-name in any of the ten interface languages, or a name given in the window, matched the same
+name in any of the eleven interface languages, or a name given in the window, matched the same
 forgiving way as preset names (casing, spaces and hyphens ignored). An unknown or ambiguous
 target exits `2` and lists the possible targets on stderr. `-list` and `-status` are always in
 English, whatever the window's language, so a script reading them does not break when someone
@@ -386,7 +398,7 @@ dotnet test --project tests\AuraToggle.Tests
 ```
 
 Static checks, no controller needed, they only read the source tree: resource keys in step across
-all ten languages (placeholders included), no hardcoded interface text, no fixed pixel sizes that
+all eleven languages (placeholders included), no hardcoded interface text, no fixed pixel sizes that
 skip the display scaling, one version across project, installer and changelog:
 
 ```bat
@@ -411,7 +423,7 @@ No account, no telemetry, no analytics, no advertising, nothing profiled and not
 tool has no server of its own to send anything to.
 
 The tool makes no network connections at all. It does not check for updates; new versions are on
-the [releases page](https://github.com/wbgcoding/Aura-Toggle/releases/latest). The only download
+the [releases page of this modification](https://github.com/salvrave001/Aura-Toggle/releases/latest). The original program is still published by its author, [BGCoding](https://github.com/wbgcoding/Aura-Toggle). The only download
 involved is the setup's offer to fetch the .NET runtime from Microsoft when your PC has none.
 
 State lives in `%LOCALAPPDATA%\aura-toggle`:

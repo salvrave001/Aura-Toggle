@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-11-16
+
+A modification of Aura Toggle by [BGCoding](https://github.com/wbgcoding/Aura-Toggle), not a new program and not an official release. It only adds the parts below. Nothing here was checked on any other memory, cooler or board.
+
+### Added
+
+- G.Skill Trident Z5 Neo RGB on the DRAM SMBus, switched together with the mainboard, including from the big button. Checked on two F5-6000J3636F16G sticks (firmware AUDA0-E6K5-0101, 8 LEDs, addresses 0x71 and 0x73) in an ASUS ROG CROSSHAIR X870E EXTREME with a Ryzen 9 9950X3D. The controller flash is never written, and SPD and the DDR5 PMIC are not touched
+- The pump screen of an ASUS ROG RYUO IV SLC 360 ARGB (USB product id 0x1C76, firmware V1.0.10): brightness, six readouts, label and value colours, clips already stored on the screen, and a short keepalive so the panel does not drop back to its own clip. This is not the 5 inch screen on the Crosshair, and the program does not upload video
+- Russian in the language list
+
 ## [1.7.2] - 2026-11-14
 
 A calmer title bar and sturdier handling of stored and imported files and of command line mistakes.
@@ -429,6 +439,7 @@ Aura Sync devices, and plain 12 V RGB headers get no channel of their own, only 
 reports as its onboard zone is switched. The controller cannot report back which effect is
 running, so the tool remembers what it last set.
 
+[1.8.0]: https://github.com/salvrave001/Aura-Toggle/releases/tag/v1.8.0
 [1.7.2]: https://github.com/wbgcoding/Aura-Toggle/compare/v1.7.1...v1.7.2
 [1.7.1]: https://github.com/wbgcoding/Aura-Toggle/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/wbgcoding/Aura-Toggle/compare/v1.6.0...v1.7.0

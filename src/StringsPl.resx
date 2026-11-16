@@ -356,4 +356,28 @@
   <data name="HotkeyModifierWin" xml:space="preserve">
     <value>Win</value>
   </data>
+  <data name="RyuoButton" xml:space="preserve"><value>Ekran</value></data>
+  <data name="RyuoTitle" xml:space="preserve"><value>Ekran Ryuo IV</value></data>
+  <data name="RyuoAccessible" xml:space="preserve"><value>Ekran chłodzenia</value></data>
+  <data name="RyuoDrive" xml:space="preserve"><value>Aktualizuj ekran</value></data>
+  <data name="RyuoTitleColor" xml:space="preserve"><value>Kolor etykiety</value></data>
+  <data name="RyuoValueColor" xml:space="preserve"><value>Kolor wartości</value></data>
+  <data name="RyuoMedia" xml:space="preserve"><value>Klip</value></data>
+  <data name="RyuoPlayMode" xml:space="preserve"><value>Odtwarzanie</value></data>
+  <data name="RyuoSlot" xml:space="preserve"><value>Pozycja {0}</value></data>
+  <data name="RyuoStatusMissing" xml:space="preserve"><value>Nie znaleziono ekranu chłodzenia.</value></data>
+  <data name="RyuoStatusOn" xml:space="preserve"><value>Ekran jest aktualizowany.</value></data>
+  <data name="RyuoStatusOff" xml:space="preserve"><value>Ekran pozostaje bez zmian.</value></data>
+  <data name="RyuoNote" xml:space="preserve"><value>Ekran zachowuje ten układ tylko wtedy, gdy program jest otwarty. Około dziesięciu sekund po zamknięciu chłodzenie znów pokazuje własny klip.</value></data>
+  <data name="RyuoPlaySingle" xml:space="preserve"><value>Jeden klip</value></data>
+  <data name="RyuoPlayRandom" xml:space="preserve"><value>Losowo</value></data>
+  <data name="RyuoPlayCycle" xml:space="preserve"><value>Po kolei</value></data>
+  <data name="RyuoItemOff" xml:space="preserve"><value>Wyłączone</value></data>
+  <data name="RyuoItemCpuLoad" xml:space="preserve"><value>Obciążenie CPU</value></data>
+  <data name="RyuoItemCpuSpeed" xml:space="preserve"><value>Takt CPU</value></data>
+  <data name="RyuoItemMemory" xml:space="preserve"><value>Pamięć</value></data>
+  <data name="RyuoItemDate" xml:space="preserve"><value>Data i godzina</value></data>
+  <data name="RyuoItemCpuTemp" xml:space="preserve"><value>Temperatura CPU</value></data>
+  <data name="RyuoItemGpuTemp" xml:space="preserve"><value>Temperatura GPU</value></data>
+  <data name="RyuoItemGpuLoad" xml:space="preserve"><value>Obciążenie GPU</value></data>
 </root>

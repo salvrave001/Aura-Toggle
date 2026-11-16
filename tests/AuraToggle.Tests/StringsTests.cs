@@ -62,12 +62,12 @@ public partial class StringsTests
     }
 
     [Fact]
-    public void TheTableListsTenDistinctLanguagesStartingWithEnglish()
+    public void TheTableListsElevenDistinctLanguagesStartingWithEnglish()
     {
-        Assert.Equal(10, Strings.Offered.Length);
+        Assert.Equal(11, Strings.Offered.Length);
         Assert.Equal("en", Strings.Offered[0].Code);
-        Assert.Equal(10, Strings.Offered.Select(language => language.Code).Distinct().Count());
-        Assert.Equal(10, Strings.Offered.Select(language => language.Bundle).Distinct().Count());
+        Assert.Equal(11, Strings.Offered.Select(language => language.Code).Distinct().Count());
+        Assert.Equal(11, Strings.Offered.Select(language => language.Bundle).Distinct().Count());
         Assert.Equal(Strings.Offered.Select(language => language.Code), Strings.Codes);
         Assert.All(Strings.Offered, language => Assert.Matches("^[a-z]{2}$", language.Code));
     }
@@ -225,7 +225,7 @@ public partial class StringsTests
     [InlineData("ja-JP", "ja")]
     [InlineData("en-GB", "en")]
     [InlineData("fr-FR", "en")]
-    [InlineData("ru-RU", "en")]
+    [InlineData("ru-RU", "ru")]
     public void AnEmptyOverrideFollowsTheWindowsDisplayLanguage(string uiCulture, string expectedLanguage)
     {
         string expected = Table(expectedLanguage)["ButtonRetry"];

@@ -186,6 +186,10 @@ copy /y "%STAGE%\%EXE%" "%DEST%" >nul
 if errorlevel 1 goto :copyfailed
 if not exist "%DEST%\%EXE%" goto :copyfailed
 
+REM The DRAM path needs this next to the exe. Absent when the driver DLL was not vendored.
+if exist "%STAGE%\inpoutx64.dll" copy /y "%STAGE%\inpoutx64.dll" "%DEST%" >nul
+if exist "%STAGE%\inpout-license.txt" copy /y "%STAGE%\inpout-license.txt" "%DEST%" >nul
+
 REM Symbols are not part of the download, and an older build may have left a copy behind.
 del /q "%DEST%\%PDB%" >nul 2>nul
 

@@ -356,4 +356,28 @@
   <data name="HotkeyModifierWin" xml:space="preserve">
     <value>Win</value>
   </data>
+  <data name="RyuoButton" xml:space="preserve"><value>画面</value></data>
+  <data name="RyuoTitle" xml:space="preserve"><value>Ryuo IV の画面</value></data>
+  <data name="RyuoAccessible" xml:space="preserve"><value>クーラーの画面</value></data>
+  <data name="RyuoDrive" xml:space="preserve"><value>画面を更新する</value></data>
+  <data name="RyuoTitleColor" xml:space="preserve"><value>ラベルの色</value></data>
+  <data name="RyuoValueColor" xml:space="preserve"><value>数値の色</value></data>
+  <data name="RyuoMedia" xml:space="preserve"><value>映像</value></data>
+  <data name="RyuoPlayMode" xml:space="preserve"><value>再生</value></data>
+  <data name="RyuoSlot" xml:space="preserve"><value>枠 {0}</value></data>
+  <data name="RyuoStatusMissing" xml:space="preserve"><value>クーラーの画面が見つかりません。</value></data>
+  <data name="RyuoStatusOn" xml:space="preserve"><value>画面を更新しています。</value></data>
+  <data name="RyuoStatusOff" xml:space="preserve"><value>画面はそのままです。</value></data>
+  <data name="RyuoNote" xml:space="preserve"><value>この配置はプログラムを開いている間だけ続きます。終了して約 10 秒たつと、クーラーは自分の映像に戻ります。</value></data>
+  <data name="RyuoPlaySingle" xml:space="preserve"><value>1 本だけ</value></data>
+  <data name="RyuoPlayRandom" xml:space="preserve"><value>ランダム</value></data>
+  <data name="RyuoPlayCycle" xml:space="preserve"><value>順番に</value></data>
+  <data name="RyuoItemOff" xml:space="preserve"><value>オフ</value></data>
+  <data name="RyuoItemCpuLoad" xml:space="preserve"><value>CPU 負荷</value></data>
+  <data name="RyuoItemCpuSpeed" xml:space="preserve"><value>CPU 速度</value></data>
+  <data name="RyuoItemMemory" xml:space="preserve"><value>メモリ</value></data>
+  <data name="RyuoItemDate" xml:space="preserve"><value>日時</value></data>
+  <data name="RyuoItemCpuTemp" xml:space="preserve"><value>CPU 温度</value></data>
+  <data name="RyuoItemGpuTemp" xml:space="preserve"><value>GPU 温度</value></data>
+  <data name="RyuoItemGpuLoad" xml:space="preserve"><value>GPU 負荷</value></data>
 </root>

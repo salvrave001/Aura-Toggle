@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Aura Toggle</value>
+  </data>
+  <data name="ButtonStateOn" xml:space="preserve">
+    <value>Вкл</value>
+  </data>
+  <data name="ButtonStateOff" xml:space="preserve">
+    <value>Выкл</value>
+  </data>
+  <data name="ButtonAccessibleName" xml:space="preserve">
+    <value>Включить или выключить подсветку материнской платы</value>
+  </data>
+  <data name="UsageLine" xml:space="preserve">
+    <value>Использование: AuraToggle [-on | -off | -toggle | -preset &lt;имя&gt; [цвет] | -brightness &lt;10-100&gt; | -custom &lt;имя|номер&gt; | -list | -status [--json] | --version | -help] [-device &lt;n&gt;] [-channel &lt;цель&gt;]   (без аргумента открывается окно переключателя)</value>
+  </data>
+  <data name="UsagePresets" xml:space="preserve">
+    <value>Эффекты: {0}</value>
+  </data>
+  <data name="StatusControllerMissing" xml:space="preserve">
+    <value>Контроллер не найден</value>
+  </data>
+  <data name="ButtonRetry" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
+  <data name="PresetAccessibleName" xml:space="preserve">
+    <value>Эффект подсветки</value>
+  </data>
+  <data name="PresetStatic" xml:space="preserve">
+    <value>Статичный</value>
+  </data>
+  <data name="PresetBreathing" xml:space="preserve">
+    <value>Дыхание</value>
+  </data>
+  <data name="PresetFlashing" xml:space="preserve">
+    <value>Мигание</value>
+  </data>
+  <data name="PresetSpectrumCycle" xml:space="preserve">
+    <value>Цикл спектра</value>
+  </data>
+  <data name="PresetRainbow" xml:space="preserve">
+    <value>Радуга</value>
+  </data>
+  <data name="PresetRainbowBreathing" xml:space="preserve">
+    <value>Радужное дыхание</value>
+  </data>
+  <data name="PresetChaseFade" xml:space="preserve">
+    <value>Бегущий след</value>
+  </data>
+  <data name="PresetChase" xml:space="preserve">
+    <value>Бегущий огонь</value>
+  </data>
+  <data name="PresetWave" xml:space="preserve">
+    <value>Волна</value>
+  </data>
+  <data name="EffectHintStatic" xml:space="preserve">
+    <value>Один ровный цвет, без движения.</value>
+  </data>
+  <data name="EffectHintBreathing" xml:space="preserve">
+    <value>Цвет медленно разгорается и гаснет.</value>
+  </data>
+  <data name="EffectHintFlashing" xml:space="preserve">
+    <value>Цвет резко включается и выключается.</value>
+  </data>
+  <data name="EffectHintSpectrumCycle" xml:space="preserve">
+    <value>Проходит весь цветовой спектр. Яркость не регулируется.</value>
+  </data>
+  <data name="EffectHintRainbow" xml:space="preserve">
+    <value>Радужный градиент бежит по каналу. Яркость не регулируется.</value>
+  </data>
+  <data name="EffectHintRainbowBreathing" xml:space="preserve">
+    <value>Радужный градиент разгорается и гаснет. Яркость не регулируется.</value>
+  </data>
+  <data name="EffectHintChaseFade" xml:space="preserve">
+    <value>Точка света бежит по каналу и оставляет затухающий след.</value>
+  </data>
+  <data name="EffectHintChase" xml:space="preserve">
+    <value>Точка света бежит по каналу, без следа.</value>
+  </data>
+  <data name="EffectHintWave" xml:space="preserve">
+    <value>Цвет идёт по каналу волной. Яркость не регулируется.</value>
+  </data>
+  <data name="ErrorControllerNotFound" xml:space="preserve">
+    <value>Контроллер Aura LED не найден (USB VID 0B05). Программа работает только с материнскими платами ASUS с подсветкой Aura по USB.</value>
+  </data>
+  <data name="ErrorControllerBusy" xml:space="preserve">
+    <value>Контроллер Aura LED занят другой программой (Armoury Crate, OpenRGB, SignalRGB). Закройте её и повторите.</value>
+  </data>
+  <data name="ErrorControllerOpen" xml:space="preserve">
+    <value>Не удалось открыть контроллер подсветки (ошибка Windows {0}).</value>
+  </data>
+  <data name="ErrorDeviceList" xml:space="preserve">
+    <value>Windows не смог показать подключённые устройства (ошибка {0}).</value>
+  </data>
+  <data name="ErrorWriteFailed" xml:space="preserve">
+    <value>Запись в контроллер Aura не удалась (команда 0x{0}): {1}</value>
+  </data>
+  <data name="ErrorWriteBusy" xml:space="preserve">
+    <value>Контроллер Aura ещё не ответил на предыдущую команду.</value>
+  </data>
+  <data name="ErrorWriteTimeout" xml:space="preserve">
+    <value>Контроллер Aura не принял команду вовремя.</value>
+  </data>
+  <data name="ErrorWriteGeneric" xml:space="preserve">
+    <value>Запись в контроллер Aura не удалась.</value>
+  </data>
+  <data name="ErrorDeviceNotFound" xml:space="preserve">
+    <value>Неизвестный номер контроллера. Запустите -list, чтобы увидеть допустимые.</value>
+  </data>
+  <data name="ErrorChannelNotFound" xml:space="preserve">
+    <value>Неизвестный или неоднозначный канал. Возможные цели:</value>
+  </data>
+  <data name="SettingsAccessibleName" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="SettingAutoStart" xml:space="preserve">
+    <value>Запускать вместе с Windows</value>
+  </data>
+  <data name="SettingMinimiseOnClose" xml:space="preserve">
+    <value>При закрытии в область уведомлений</value>
+  </data>
+  <data name="SettingStartAction" xml:space="preserve">
+    <value>Подсветка при запуске</value>
+  </data>
+  <data name="StartActionNone" xml:space="preserve">
+    <value>Не менять</value>
+  </data>
+  <data name="StartActionOff" xml:space="preserve">
+    <value>Выключить</value>
+  </data>
+  <data name="SettingCloseAfterStart" xml:space="preserve">
+    <value>Применить и закрыть</value>
+  </data>
+  <data name="SettingCloseAfterStartHotkeyNote" xml:space="preserve">
+    <value>Горячая клавиша работает только пока программа запущена.</value>
+  </data>
+  <data name="TrayOpen" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="TrayEffects" xml:space="preserve">
+    <value>Эффекты</value>
+  </data>
+  <data name="SettingAnimate" xml:space="preserve">
+    <value>Анимировать переключатель</value>
+  </data>
+  <data name="SettingAlwaysOnTop" xml:space="preserve">
+    <value>Поверх остальных окон</value>
+  </data>
+  <data name="SettingLanguage" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Система</value>
+  </data>
+  <data name="LanguageName" xml:space="preserve">
+    <value>Русский</value>
+  </data>
+  <data name="DeviceFallbackName" xml:space="preserve">
+    <value>Контроллер Aura #{0}</value>
+  </data>
+  <data name="ChannelAll" xml:space="preserve">
+    <value>Все каналы</value>
+  </data>
+  <data name="ChannelAccessibleName" xml:space="preserve">
+    <value>Какой канал переключать</value>
+  </data>
+  <data name="ChannelOnboard" xml:space="preserve">
+    <value>На плате</value>
+  </data>
+  <data name="ChannelHeader" xml:space="preserve">
+    <value>ARGB {0}</value>
+  </data>
+  <data name="ChannelQualified" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="ChannelEffectHint" xml:space="preserve">
+    <value>Динамический эффект меняет все каналы</value>
+  </data>
+  <data name="ChannelRenameSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="ChannelRenameReset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="ChannelRenameResetConfirm" xml:space="preserve">
+    <value>Сбросить имя?</value>
+  </data>
+  <data name="ChannelRenameAccessibleName" xml:space="preserve">
+    <value>Имя канала</value>
+  </data>
+  <data name="SettingBrightness" xml:space="preserve">
+    <value>Яркость</value>
+  </data>
+  <data name="ColourAccessibleName" xml:space="preserve">
+    <value>Цвет эффекта</value>
+  </data>
+  <data name="ColourHexAccessibleName" xml:space="preserve">
+    <value>Цвет в виде HEX</value>
+  </data>
+  <data name="BrightnessValue" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="ButtonNewCustomPreset" xml:space="preserve">
+    <value>Новый пресет</value>
+  </data>
+  <data name="CustomPresetNamePlaceholder" xml:space="preserve">
+    <value>Имя пресета</value>
+  </data>
+  <data name="CustomPresetSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="CustomPresetCreate" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="CustomPresetReplace" xml:space="preserve">
+    <value>Заменить</value>
+  </data>
+  <data name="CustomPresetDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="CustomPresetConfirmDelete" xml:space="preserve">
+    <value>Удалить насовсем?</value>
+  </data>
+  <data name="CustomPresetDiscard" xml:space="preserve">
+    <value>Не сохранять</value>
+  </data>
+  <data name="CustomPresetNew" xml:space="preserve">
+    <value>Новый пресет</value>
+  </data>
+  <data name="CustomPresetEdit" xml:space="preserve">
+    <value>Изменить пресет</value>
+  </data>
+  <data name="CustomPresetNoDevices" xml:space="preserve">
+    <value>Контроллер не найден.</value>
+  </data>
+  <data name="CustomPresetAccessibleName" xml:space="preserve">
+    <value>Редактор своего пресета</value>
+  </data>
+  <data name="CustomPresetExport" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="CustomPresetImport" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="FileFilterJson" xml:space="preserve">
+    <value>Файлы JSON (*.json)|*.json</value>
+  </data>
+  <data name="CustomPresetExportError" xml:space="preserve">
+    <value>Не удалось сохранить файл.</value>
+  </data>
+  <data name="CustomPresetImportError" xml:space="preserve">
+    <value>Это не файл пресета, или он повреждён.</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Что-то пошло не так</value>
+  </data>
+  <data name="ErrorUnexpected" xml:space="preserve">
+    <value>Так быть не должно. Обычно помогает закрыть Aura Toggle и открыть снова.</value>
+  </data>
+  <data name="ErrorSaveFailed" xml:space="preserve">
+    <value>Пресет не сохранился. Диск может быть заполнен, или файл держит другая программа. Закройте её и сохраните снова.</value>
+  </data>
+  <data name="ErrorDetails" xml:space="preserve">
+    <value>Подробности</value>
+  </data>
+  <data name="ErrorCopyDetails" xml:space="preserve">
+    <value>Копировать подробности</value>
+  </data>
+  <data name="ErrorOpenLog" xml:space="preserve">
+    <value>Открыть папку журнала</value>
+  </data>
+  <data name="ErrorClose" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="SettingReset" xml:space="preserve">
+    <value>Сбросить всё</value>
+  </data>
+  <data name="SettingResetConfirm" xml:space="preserve">
+    <value>Пресеты тоже. Точно?</value>
+  </data>
+  <data name="ErrorResetBackupFailed" xml:space="preserve">
+    <value>Ничего не сброшено: не удалось записать резервную копию настроек и пресетов. Освободите место на диске и повторите.</value>
+  </data>
+  <data name="ErrorResetIncomplete" xml:space="preserve">
+    <value>Некоторые файлы не сброшены, потому что их использует другая программа. Закройте её и повторите.</value>
+  </data>
+  <data name="SettingHotkey" xml:space="preserve">
+    <value>Глобальная клавиша (вкл/выкл)</value>
+  </data>
+  <data name="SettingHotkeyConflict" xml:space="preserve">
+    <value>Это сочетание уже занято.</value>
+  </data>
+  <data name="PresetShortcutHint" xml:space="preserve">
+    <value>F2 правит, Ctrl+D копирует, Del удаляет</value>
+  </data>
+  <data name="ChannelShortcutHint" xml:space="preserve">
+    <value>F2 меняет имя</value>
+  </data>
+  <data name="HotkeyRecordPrompt" xml:space="preserve">
+    <value>Нажмите клавишу...</value>
+  </data>
+  <data name="HotkeyModifierControl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="HotkeyModifierAlt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="HotkeyModifierShift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="HotkeyModifierWin" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="RyuoButton" xml:space="preserve"><value>Экран</value></data>
+  <data name="RyuoTitle" xml:space="preserve"><value>Экран Ryuo IV</value></data>
+  <data name="RyuoAccessible" xml:space="preserve"><value>Экран охлаждения</value></data>
+  <data name="RyuoDrive" xml:space="preserve"><value>Обновлять экран</value></data>
+  <data name="RyuoTitleColor" xml:space="preserve"><value>Цвет подписи</value></data>
+  <data name="RyuoValueColor" xml:space="preserve"><value>Цвет значения</value></data>
+  <data name="RyuoMedia" xml:space="preserve"><value>Ролик</value></data>
+  <data name="RyuoPlayMode" xml:space="preserve"><value>Воспроизведение</value></data>
+  <data name="RyuoSlot" xml:space="preserve"><value>Слот {0}</value></data>
+  <data name="RyuoStatusMissing" xml:space="preserve"><value>Экран охлаждения не найден.</value></data>
+  <data name="RyuoStatusOn" xml:space="preserve"><value>Экран обновляется.</value></data>
+  <data name="RyuoStatusOff" xml:space="preserve"><value>Экран оставлен как есть.</value></data>
+  <data name="RyuoNote" xml:space="preserve"><value>Экран держит эту раскладку, только пока программа открыта. Примерно через десять секунд после закрытия охлаждение снова показывает свой ролик.</value></data>
+  <data name="RyuoPlaySingle" xml:space="preserve"><value>Один ролик</value></data>
+  <data name="RyuoPlayRandom" xml:space="preserve"><value>Случайно</value></data>
+  <data name="RyuoPlayCycle" xml:space="preserve"><value>По порядку</value></data>
+  <data name="RyuoItemOff" xml:space="preserve"><value>Выкл</value></data>
+  <data name="RyuoItemCpuLoad" xml:space="preserve"><value>Загрузка CPU</value></data>
+  <data name="RyuoItemCpuSpeed" xml:space="preserve"><value>Частота CPU</value></data>
+  <data name="RyuoItemMemory" xml:space="preserve"><value>Память</value></data>
+  <data name="RyuoItemDate" xml:space="preserve"><value>Дата и время</value></data>
+  <data name="RyuoItemCpuTemp" xml:space="preserve"><value>Температура CPU</value></data>
+  <data name="RyuoItemGpuTemp" xml:space="preserve"><value>Температура GPU</value></data>
+  <data name="RyuoItemGpuLoad" xml:space="preserve"><value>Загрузка GPU</value></data>
+</root>

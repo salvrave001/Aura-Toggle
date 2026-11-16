@@ -9,7 +9,7 @@
 ; it checks for it and offers to fetch it from Microsoft, once, on the machines that lack it.
 
 #ifndef AppVersion
-  #define AppVersion "1.7.2"
+  #define AppVersion "1.8.0"
 #endif
 
 #define AppName "Aura Toggle"
@@ -81,14 +81,14 @@ ShowLanguageDialog=no
 LanguageDetectionMethod=uilanguage
 
 [Languages]
-; The same ten languages the application itself speaks, in the same order. Codes match the ones in
+; The same eleven languages the application itself speaks, in the same order. Codes match the ones in
 ; Strings.cs, so the setup and the program it installs come up in the same language.
 ;
 ; The licence page carries a plain-language preamble in front of the MIT text: what the licence
 ; allows, what the tool does to the board and who the trademarks belong to. The MIT text alone
 ; answers none of the questions somebody actually has at that point in a setup. That preamble is
 ; written and reviewed in English and German only - a legal text is worth nothing if nobody can
-; vouch for the wording - so the other eight languages get the English licence file. Their setup
+; vouch for the wording - so the other nine languages get the English licence file. Their setup
 ; is translated; the licence page is not.
 ;
 ; Simplified Chinese is the one language Inno Setup ships no translation for, so the message file
@@ -101,6 +101,7 @@ Name: "pt"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; LicenseF
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; LicenseFile: "license-en.txt"
 Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"; LicenseFile: "license-en.txt"
 Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"; LicenseFile: "license-en.txt"
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; LicenseFile: "license-en.txt"
 Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"; LicenseFile: "license-en.txt"
 Name: "ja"; MessagesFile: "compiler:Languages\Japanese.isl"; LicenseFile: "license-en.txt"
 Name: "zh"; MessagesFile: "ChineseSimplified.isl"; LicenseFile: "license-en.txt"
@@ -183,6 +184,17 @@ pl.RuntimeDownloading=Pobieranie .NET 10 Desktop Runtime... %1%%
 pl.RuntimeInstalling=Instalowanie .NET 10 Desktop Runtime...
 pl.RuntimeDeclined=Aura Toggle nie może działać bez .NET 10 Desktop Runtime, więc nic nie zostało zainstalowane.
 pl.RuntimeFailed=Nie udało się zainstalować .NET 10 Desktop Runtime. Zainstaluj go ręcznie ze strony https://dotnet.microsoft.com/download/dotnet/10.0, a następnie uruchom ten instalator ponownie.
+ru.AutoStart=Запускать Aura Toggle вместе с Windows
+ru.CloseAppFirst=Aura Toggle всё ещё работает. Закройте его (правый щелчок по значку в области уведомлений, Выход) и нажмите OK, чтобы продолжить.
+ru.DesktopIcon=Создать ярлык на рабочем столе
+ru.OtherInstall=Aura Toggle уже установлен в другой папке:%n%1%n%nУдалить ту копию перед установкой сюда? Настройки и пресеты сохранятся.%n%nДа: удалить%nНет: оставить обе%nОтмена: вернуться
+ru.OtherUninstallFailed=Копию в %1 не удалось удалить. Установка продолжится. Позже её можно убрать в параметрах Windows.
+ru.RemoveSettings=Удалить также настройки, свои пресеты и имена каналов? (%1)
+ru.RuntimeAsk=Aura Toggle нужен Microsoft .NET 10 Desktop Runtime, которого на этом компьютере ещё нет.%n%nСкачать его с сайта Microsoft и установить сейчас? Это около 60 МБ и занимает минуту.
+ru.RuntimeDownloading=Скачивается .NET 10 Desktop Runtime... %1%%
+ru.RuntimeInstalling=Устанавливается .NET 10 Desktop Runtime...
+ru.RuntimeDeclined=Без .NET 10 Desktop Runtime Aura Toggle не запустится, поэтому ничего не установлено.
+ru.RuntimeFailed=.NET 10 Desktop Runtime не удалось установить. Установите его вручную с https://dotnet.microsoft.com/download/dotnet/10.0 и запустите эту установку снова.
 tr.AutoStart=Windows başladığında Aura Toggle'ı başlat
 tr.CloseAppFirst=Aura Toggle hâlâ çalışıyor. Kapatın (bildirim alanındaki simgeye sağ tıklayın, Çıkış) ve devam etmek için Tamam'a tıklayın.
 tr.DesktopIcon=Masaüstünde kısayol oluştur
@@ -223,6 +235,12 @@ Name: "autostart"; Description: "{cm:AutoStart}"; Flags: unchecked
 
 [Files]
 Source: "..\dist\{#AppExe}"; DestDir: "{app}"; DestName: "{#AppExe}"; Flags: ignoreversion
+#if FileExists("..\dist\inpoutx64.dll")
+Source: "..\dist\inpoutx64.dll"; DestDir: "{app}"; Flags: ignoreversion
+#endif
+#if FileExists("..\dist\inpout-license.txt")
+Source: "..\dist\inpout-license.txt"; DestDir: "{app}"; Flags: ignoreversion
+#endif
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 ; Never installed to the target machine - only extracted to {tmp} on demand, to check the

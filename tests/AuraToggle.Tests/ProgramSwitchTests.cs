@@ -692,7 +692,7 @@ public sealed class ProgramSwitchTests : DataFolderTest
 
         Assert.Same(open, ResolveDevices(open, null));
         Assert.Same(open, ResolveDevices(open, ""));
-        Assert.Equal(new[] { b.Device }, ResolveDevices(open, "b"));
+        Assert.Same(b.Device, Assert.Single(ResolveDevices(open, "b")));
     }
 
     [Fact]
